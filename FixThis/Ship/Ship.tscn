@@ -9,6 +9,10 @@ height = 5.36879
 [node name="PlayerShip" type="KinematicBody2D"]
 position = Vector2( 157.32, 76.8476 )
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( -1.48663, 0 )
+current = true
+
 [node name="MovementSystem" type="Node2D" parent="."]
 script = ExtResource( 1 )
 acceleration = 2.0
@@ -21,3 +25,15 @@ rotation = 1.5708
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+
+[node name="BGStars" type="CPUParticles2D" parent="."]
+position = Vector2( -1.48663, 0 )
+amount = 50
+lifetime = 4.0
+preprocess = 2.0
+local_coords = false
+emission_shape = 2
+emission_rect_extents = Vector2( 700, 700 )
+spread = 180.0
+gravity = Vector2( 0, 0 )
+scale_amount = 3.0
