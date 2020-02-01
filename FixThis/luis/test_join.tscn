@@ -1,0 +1,97 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://luis/testJoin.gd" type="Script" id=1]
+[ext_resource path="res://luis/catcher.gd" type="Script" id=2]
+[ext_resource path="res://luis/StateManager.gd" type="Script" id=3]
+[ext_resource path="res://luis/debug_s.gd" type="Script" id=4]
+[ext_resource path="res://luis/icon.png" type="Texture" id=5]
+
+[sub_resource type="CircleShape2D" id=1]
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 2.0
+
+[sub_resource type="RectangleShape2D" id=3]
+
+[sub_resource type="RectangleShape2D" id=4]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" type="KinematicBody2D" parent="."]
+position = Vector2( 320, 170 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="ColorRect" type="ColorRect" parent="Player"]
+margin_left = -10.0
+margin_top = -10.0
+margin_right = 10.0
+margin_bottom = 10.0
+color = Color( 0.239216, 0.266667, 0.494118, 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource( 1 )
+
+[node name="hook" type="DampedSpringJoint2D" parent="Player"]
+node_a = NodePath("..")
+node_b = NodePath("../../RigidBody2D")
+rest_length = 50.0
+stiffness = 64.0
+
+[node name="Line2D" type="Line2D" parent="Player"]
+texture_mode = 1115684864
+
+[node name="catcher" type="Area2D" parent="Player"]
+editor/display_folded = true
+position = Vector2( 40, 20 )
+monitorable = false
+collision_layer = 2
+collision_mask = 2
+script = ExtResource( 2 )
+max_length = 64.0
+time_to_fly = 0.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/catcher"]
+shape = SubResource( 2 )
+
+[node name="StateManager" type="Node2D" parent="Player"]
+script = ExtResource( 3 )
+hook_path = NodePath("../hook")
+catcher_path = NodePath("../catcher")
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( 300, 30 )
+collision_layer = 1047550
+collision_mask = 2050
+gravity_scale = 0.0
+can_sleep = false
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="RigidBody2D"]
+scale = Vector2( 0.3125, 0.3125 )
+texture = ExtResource( 5 )
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+editor/display_folded = true
+position = Vector2( 120, 30 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="KinematicBody2D"]
+scale = Vector2( 0.3125, 0.3125 )
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+shape = SubResource( 4 )
+[connection signal="body_entered" from="Player/catcher" to="Player" method="catch_state"]
+[connection signal="body_entered" from="Player/catcher" to="Player/StateManager" method="state_catch"]
