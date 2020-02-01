@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
+<<<<<<< Updated upstream
 [ext_resource path="res://luis/testJoin.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://luis/picker.gd" type="Script" id=3]
@@ -7,47 +8,61 @@
 [sub_resource type="RectangleShape2D" id=1]
 
 [sub_resource type="CircleShape2D" id=2]
+=======
+[ext_resource path="res://testJoin.gd" type="Script" id=1]
+[ext_resource path="res://luis/icon.png" type="Texture" id=2]
+[ext_resource path="res://luis/testMove.gd" type="Script" id=3]
+>>>>>>> Stashed changes
 
 [sub_resource type="RectangleShape2D" id=3]
 
+<<<<<<< Updated upstream
 [sub_resource type="CircleShape2D" id=4]
+=======
+[sub_resource type="CircleShape2D" id=1]
+>>>>>>> Stashed changes
+
+[sub_resource type="RectangleShape2D" id=3]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="DampedSpringJoint2D2" type="DampedSpringJoint2D" parent="."]
-position = Vector2( 59.2139, 20 )
-node_a = NodePath("../Player")
-node_b = NodePath("../KinematicBody2D")
-bias = 0.5
-length = 100.0
-rest_length = 20.0
-
 [node name="Player" type="KinematicBody2D" parent="."]
+<<<<<<< Updated upstream
 position = Vector2( 59.2139, 20 )
+=======
+position = Vector2( 20, 20 )
+>>>>>>> Stashed changes
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
-spring_joint = NodePath("../DampedSpringJoint2D2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="Player"]
 scale = Vector2( 0.337067, 0.337067 )
 texture = ExtResource( 2 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-shape = SubResource( 1 )
+[node name="PinJoint2D" type="PinJoint2D" parent="Player"]
+editor/display_folded = true
+node_a = NodePath("..")
+bias = 0.9
+softness = 2.6
 
-[node name="pickable" type="RigidBody2D" parent="."]
-position = Vector2( 170, 80 )
+[node name="pickable" type="RigidBody2D" parent="Player/PinJoint2D"]
+position = Vector2( 0, 200 )
+mass = 0.01
 gravity_scale = 0.0
 __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Sprite" type="Sprite" parent="pickable"]
+[node name="Sprite" type="Sprite" parent="Player/PinJoint2D/pickable"]
 scale = Vector2( 0.3125, 0.3125 )
 texture = ExtResource( 2 )
 
+<<<<<<< Updated upstream
 [node name="CollisionShape2D" type="CollisionShape2D" parent="pickable"]
 shape = SubResource( 2 )
 
@@ -64,10 +79,24 @@ texture = ExtResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="KinematicBody2D"]
 editor/display_folded = true
-script = ExtResource( 3 )
-__meta__ = {
-"_edit_group_": true
-}
+=======
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/PinJoint2D/pickable"]
+shape = SubResource( 1 )
 
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+>>>>>>> Stashed changes
+script = ExtResource( 3 )
+
+<<<<<<< Updated upstream
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D/Area2D"]
 shape = SubResource( 4 )
+=======
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+shape = SubResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="KinematicBody2D"]
+margin_left = -10.0
+margin_top = -10.0
+margin_right = 10.0
+margin_bottom = 10.0
+>>>>>>> Stashed changes
