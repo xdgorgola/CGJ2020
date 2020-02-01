@@ -12,15 +12,14 @@ func _ready():
 func _process(delta):
 	if (!isActive):
 		return;
-	progress(delta);
+	progress_ship(delta);
 	get_parent().emit_signal("progressed", progress);
 
 func update_speed(remaining):
 	progSpeed = remaining;
 
-func progress(delta):
+func progress_ship(delta):
 	progress = abs(finalX - global_position.x + progSpeed * delta);
-	print(progress)
 	if (progress <= 0):
 		get_parent().emit_signal("reached_goal");
 	get_parent().global_position += Vector2.RIGHT * progSpeed * delta;
