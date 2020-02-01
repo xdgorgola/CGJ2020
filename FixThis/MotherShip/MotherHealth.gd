@@ -1,26 +1,56 @@
 extends Node2D
 
-export var motherHP : int = 10;
-export var minTime : float = 5;
-export var maxTime : float = 10;
+# Parte a volar
+export var part = preload("res://Parts/ShipPart.tscn");
 
+# Vida nave nodriza
+export var maxHP : int = 10;
+var motherHP : int = 10;
+
+# Cosos sivira
+export var SParam : float = 10;
+export var NParam : float = 5;
+var interval = 0;
+
+# Timer
 var looseTimer : Timer = Timer.new();
 
 func _ready():
-	add_child(looseTimer);
-	if (minTime > maxTime):
-		push_error("Min time bigger than max time");
-	looseTimer.connect("timeout", self, "loose_part");
-	looseTimer.start(1); # Poner aca el start time del juego para que salga una disparada de una
+	motherHP = maxHP;
+	get_node("../GameManager").connect("started_game", self, "start_HP_System");
 
-func calculate_next_time():
-	var next : float = rand_range(minTime, maxTime);
-	looseTimer.start(next);
+func start_HP_System():
+	add_child(looseTimer);
+	looseTimer.connect("timeout", self, "loose_part");
+	looseTimer.start((SParam * maxHP)/NParam); 
 	
 func loose_part():
 	motherHP -= 1;
+	print("Perdiendo vida.");
 	if (motherHP <= 0):
 		get_parent().emit_signal("bigOof");
 	else:
-		calculate_next_time();
-	# Instancia y eso
+		if (maxHP != motherHP):
+			interval = SParam * (maxHP - motherHP);
+		else:
+			interval = SParam * maxHP
+		interval = interval / NParam;
+		instantiate_part();
+		looseTimer.start(interval);
+		
+# La nave recupera una parte
+func recover_part():
+	motherHP = min(maxHP, motherHP + 1);
+	if (maxHP != motherHP):
+		interval = SParam * (maxHP - motherHP);
+	else:
+		interval = SParam * maxHP
+	interval = interval / NParam;
+	looseTimer.start(interval);
+	
+func instantiate_part():
+	var lostpart = part.instance();
+	var dir = Vector2.RIGHT * cos(rand_range(0.0, 360.0)) + Vector2.UP * sin(rand_range(0.0, 360.0));
+	get_tree().root.add_child(lostpart);
+	print(get_parent().global_position);
+	lostpart.get_node("LaunchSystem").spawn_part(get_parent().global_position + dir * 100, dir, rand_range(50.0, 200.0));
