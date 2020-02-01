@@ -7,10 +7,13 @@
 [sub_resource type="CircleShape2D" id=1]
 
 [node name="MotherShip" type="KinematicBody2D"]
+position = Vector2( 9.92752, 187.72 )
 script = ExtResource( 1 )
 
 [node name="MotherHealth" type="Node2D" parent="."]
 script = ExtResource( 2 )
+maxHP = 5
+SParam = 1.0
 
 [node name="MotherProgress" type="Node2D" parent="."]
 script = ExtResource( 3 )
